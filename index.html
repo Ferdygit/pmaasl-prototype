@@ -45,6 +45,18 @@
             border-bottom: 2px solid var(--accent-color);
         }
 
+        /* Mobile menu link style */
+        .nav-link-mobile {
+            padding: 1rem 1.5rem; /* px-6 py-4 */
+            display: block;
+            color: #E5E7EB; /* text-gray-200 */
+            border-bottom: 1px solid #1F2937; /* border-gray-700 */
+        }
+        .nav-link-mobile:hover {
+            background-color: #1F2937; /* bg-gray-700 */
+            color: var(--accent-color);
+        }
+
         /* Fade-in animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -62,16 +74,18 @@
 
     <!-- HEADER / NAVIGATION -->
     <header class="bg-black/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-800">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center relative">
             <!-- Logo -->
-            <a href="#" onclick="showPage('home-page')" class="text-2xl font-bold text-white">
+            <a href="#" onclick="showPage('home-page'); hideMenu();" class="text-2xl font-bold text-white">
                 PMAA<span class="text-accent">SL</span>
             </a>
             
-            <!-- Mobile Menu Button (Hidden for demo, but good practice) -->
-            <!-- <button class="md:hidden">...</button> -->
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden text-white text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
 
-            <!-- Menu Links -->
+            <!-- Desktop Menu Links -->
             <div class="hidden md:flex space-x-6 items-center">
                 <a href="#" id="nav-home-page" class="nav-link active" onclick="showPage('home-page')">Home</a>
                 <a href="#" id="nav-artists-page" class="nav-link" onclick="showPage('artists-page')">Find an Artist</a>
@@ -79,6 +93,16 @@
                 <a href="#" id="nav-membership-page" class="nav-link" onclick="showPage('membership-page')">Membership</a>
                 <a href="#" id="nav-news-page" class="nav-link" onclick="showPage('news-page')">News & Events</a>
                 <a href="#" id="nav-contact-page" class="nav-link" onclick="showPage('contact-page')">Contact</a>
+            </div>
+
+            <!-- Mobile Menu (Dropdown) -->
+            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 right-0 bg-gray-900 border-b border-gray-800 shadow-lg z-50">
+                <a href="#" class="block nav-link-mobile" onclick="showPage('home-page'); hideMenu();">Home</a>
+                <a href="#" class="block nav-link-mobile" onclick="showPage('artists-page'); hideMenu();">Find an Artist</a>
+                <a href="#" class="block nav-link-mobile" onclick="showPage('about-page'); hideMenu();">About Us</a>
+                <a href="#" class="block nav-link-mobile" onclick="showPage('membership-page'); hideMenu();">Membership</a>
+                <a href="#" class="block nav-link-mobile" onclick="showPage('news-page'); hideMenu();">News & Events</a>
+                <a href="#" class="block nav-link-mobile" onclick="showPage('contact-page'); hideMenu();">Contact</a>
             </div>
         </nav>
     </header>
@@ -103,7 +127,7 @@
                     <p class="text-xl text-gray-300 mb-8">
                         Connecting World-Class Talent with TV, Cinema, and Media.
                     </p>
-                    <div class="space-x-4">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <button onclick="showPage('artists-page')" class="bg-accent text-black font-bold py-3 px-6 rounded-lg hover:bg-accent-hover transition duration-300">
                             Find an Artist
                         </button>
@@ -276,7 +300,7 @@
                         <img src="https://placehold.co/400x400/333/555?text=Work+5" alt="Portfolio Work" class="rounded-lg object-cover w-full h-48 transition-transform hover:scale-110">
                         <img src="https://placehold.co/400x400/333/555?text=Work+6" alt="Portfolio Work" class="rounded-lg object-cover w-full h-48 transition-transform hover:scale-110">
                     </div>
-                    <!-- YouTube Embed (Demo) -->
+                    <!-- YouTube Embed (Your Lion) -->
                     <h3 class="text-xl font-bold text-accent mt-8 mb-4">Artist Showreel</h3>
                     <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
                         <iframe src="https://www.youtube.com/embed/GDrixX8vsBg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -507,10 +531,12 @@
     </footer>
 
 
-    <!-- JAVASCRIPT for Page Navigation -->
+    <!-- JAVASCRIPT for Page Navigation & Mobile Menu -->
     <script>
         const pages = document.querySelectorAll('.page-content');
         const navLinks = document.querySelectorAll('.nav-link');
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
 
         function showPage(pageId) {
             // Hide all pages
@@ -518,7 +544,7 @@
                 page.style.display = 'none';
             });
             
-            // Remove 'active' class from all nav links
+            // Remove 'active' class from all desktop nav links
             navLinks.forEach(link => {
                 link.classList.remove('active');
             });
@@ -529,7 +555,7 @@
                 activePage.style.display = 'block';
             }
 
-            // Add 'active' class to the clicked nav link
+            // Add 'active' class to the clicked desktop nav link
             const activeLink = document.getElementById('nav-' + pageId);
             if (activeLink) {
                 activeLink.classList.add('active');
@@ -538,10 +564,17 @@
             // Scroll to top
             window.scrollTo(0, 0);
         }
+
+        // Function to hide the mobile menu (called on link click)
+        function hideMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        // Toggle mobile menu
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
     </script>
 
 </body>
 </html>
-
-
-
